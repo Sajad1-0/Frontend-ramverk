@@ -48,7 +48,7 @@ toUpperCase.addEventListener('click', () => {
 // lEKTION 1 
 // Uppgift 1 && 2: Definiera en klass, konstruktor och this nyckelordet 
 
-class Person {
+class person {
     constructor (namn, ålder, yrke) {
         this.namn = namn;
         this.ålder = ålder;
@@ -56,22 +56,23 @@ class Person {
     }
 
     introducera () {
-        console.log(`Hej, jag heter ${this.namn}, jag är ${this.ålder} år gammal och jag är ${this.yrke}`);
+        console.log(`Hej, jag heter ${this.name} och jag är ${this.yrke} `);
     }
 }
 
 // uppgift 3: Skapa och Använda Instanser  
-const person1 = new Person('Sajjad', 24, 'developer');
-const person2 = new Person('Mohsen', 25, 'lagermedarbetare');
+const person1 = new person('Sajjad', 24, 'developer');
+const person2 = new person('Mohsen', 25, 'lagermedarbetare');
 // person1.introducera();
 // person2.introducera();
 
 // uppgift 4 & 5: Implementera Arv och Användning av super 
-class Student extends Person {
-    constructor (namn, ålder, yrke, kurs) {
-        super(namn, ålder, yrke); // Anropa kontruktoren i person med 'namn'
-        this.kurs = kurs; // lägger till ny information om personen
+class student extends person {
+    constructor(name, ålder, yrke, kurs) {
+        super (name, ålder, yrke);
+        this.kurs = kurs;
     }
+
 
     introducera () {
         console.log(`Hej, jag heter ${this.namn}, jag är ${this.ålder} år gammal och jag är ${this.yrke}
@@ -79,25 +80,34 @@ class Student extends Person {
     }
 }
 
-const person3 = new Student('Sajjad', 24, 'developer', 'Avancerad JavaScript');
+const person3 = new student('Sajjad', 24, 'developer', 'Avancerad JavaScript');
 person3.introducera();
 
 
 // uppgift 6 : Prototyper och prototypkedjan
-function Djur(art, name) {
-    this.art = art;
+function djur(art, name) {
     this.name = name;
+    this.art = art;
+
+    djur.prototype.ljud = function () {
+        console.log(`${this.name} säger ${this.art}`);
+    }
 }
 
-Djur.prototype.ljud = function () {
-    console.log(`${this.name} säger ${this.art}`);
-}
-
-const djur1 = new Djur('afff afff', 'hund')
-const djur2 = new Djur('mjau', 'katt');
+const djur1 = new djur('mjau', 'katt');
 djur1.ljud();
-djur2.ljud();
-
 //Uppgift 7 : Utforska Prototypkedjan 
+function katt(name) {
+    djur.call(this, 'mjau', name);
+}
+// arv av prototyp från djur till katt
+katt.prototype = Object.create(djur.prototype);
 
+// lägg till ny metod
+katt.prototype.spinna = function () {
+    console.log(`${this.name} spinner`);
+}
 
+const katt1 = new katt('Rex');
+katt1.ljud();
+katt1.spinna();
